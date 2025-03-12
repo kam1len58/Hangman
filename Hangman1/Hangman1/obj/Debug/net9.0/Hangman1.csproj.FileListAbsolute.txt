@@ -1,0 +1,14 @@
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\bin\Debug\net9.0\Hangman1.exe
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\bin\Debug\net9.0\Hangman1.deps.json
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\bin\Debug\net9.0\Hangman1.runtimeconfig.json
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\bin\Debug\net9.0\Hangman1.dll
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\bin\Debug\net9.0\Hangman1.pdb
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.AssemblyInfoInputs.cache
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.AssemblyInfo.cs
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.dll
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\refint\Hangman1.dll
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.pdb
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\Hangman1.genruntimeconfig.cache
+C:\Users\Admin\Desktop\pet-projects\Hangman1\Hangman1\obj\Debug\net9.0\ref\Hangman1.dll
