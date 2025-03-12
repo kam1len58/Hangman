@@ -10,8 +10,8 @@
 [ТЗ проекта](https://zhukovsd.github.io/java-backend-learning-course/projects/hangman/)
 ## Запуск проекта
 
-1. Перейдите в папку `Hangman`.
-2. Откройте файл `Hangman.sln` в **Visual Studio**.
+1. Перейдите в папку `Hangman1`.
+2. Откройте файл `Hangman1.sln` в **Visual Studio**.
 3. Нажмите на кнопку **"Пуск"** (или `Start`) в Visual Studio.
 4. Игра запустится в консоли. Следуйте инструкциям на экране, чтобы начать игру.
 
