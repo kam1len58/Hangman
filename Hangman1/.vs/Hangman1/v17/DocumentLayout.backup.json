@@ -1,10 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\pet-projects\\Hangman1\\",
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\\u0412\u0438\u0441\u0435\u043B\u0438\u0446\u0430\\Hangman1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ABCE0B8C-A766-47BA-9015-616194E289D4}|Hangman1\\Hangman1.csproj|c:\\users\\admin\\desktop\\pet-projects\\hangman1\\hangman1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{ABCE0B8C-A766-47BA-9015-616194E289D4}|Hangman1\\Hangman1.csproj|c:\\users\\admin\\desktop\\\u0432\u0438\u0441\u0435\u043B\u0438\u0446\u0430\\hangman1\\hangman1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ABCE0B8C-A766-47BA-9015-616194E289D4}|Hangman1\\Hangman1.csproj|solutionrelative:hangman1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{754FC069-D67B-A9D7-50A1-8D1CA196D8F1}|C:\\Users\\Admin\\Downloads\\gitignore (1).txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +17,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "gitignore (1).txt",
+              "DocumentMoniker": "C:\\Users\\Admin\\Downloads\\gitignore (1).txt",
+              "RelativeDocumentMoniker": "..\\..\\..\\Downloads\\gitignore (1).txt",
+              "ToolTip": "C:\\Users\\Admin\\Downloads\\gitignore (1).txt",
+              "RelativeToolTip": "..\\..\\..\\Downloads\\gitignore (1).txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-03-12T16:36:24.814Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
@@ -24,11 +40,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\pet-projects\\Hangman1\\Hangman1\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\\u0412\u0438\u0441\u0435\u043B\u0438\u0446\u0430\\Hangman1\\Hangman1\\Program.cs",
               "RelativeDocumentMoniker": "Hangman1\\Program.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\pet-projects\\Hangman1\\Hangman1\\Program.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\\u0412\u0438\u0441\u0435\u043B\u0438\u0446\u0430\\Hangman1\\Hangman1\\Program.cs",
               "RelativeToolTip": "Hangman1\\Program.cs",
-              "ViewState": "AgIAAMMAAAAAAAAAAAAcwBIBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-28T17:43:24.2Z",
               "EditorCaption": ""
