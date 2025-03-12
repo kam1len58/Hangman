@@ -1,18 +1,10 @@
 ﻿using Hangman;
-using System.Collections.Immutable;
 
-ImmutableList<string> menuOptions = ImmutableList.Create
-        (
-            "Новая игра",
-            "Выйти"
-        );
-
-GameStatus[] gameStatus= { GameStatus.Start, GameStatus.Exit };
+(string, GameStatus) [] menuItems = {("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit)};
 HangmanSettings.ConsoleHangman();
 while (true)
 {
-    GameStatus menuItem = Menu.MenuItems(menuOptions, gameStatus); 
-    switch (menuItem)
+    switch (Menu.MenuItems(menuItems))
     {
         case GameStatus.Start:
             StartGame();
