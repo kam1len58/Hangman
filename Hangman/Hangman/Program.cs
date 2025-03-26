@@ -3,7 +3,6 @@
 HangmanSettings.ConsoleHangman();
 while (true)
 {
-    
     GameStatus menuItem = NewGameOrExit();
     switch (menuItem)
     {
@@ -37,9 +36,7 @@ static GameStatus NewGameOrExit()
 
 static void StartGame()
 {
-    
     string[] dictionary = new string[0];
-
     try
     {
         dictionary = File.ReadAllLines(HangmanSettings.fileName);
@@ -62,7 +59,6 @@ static void StartGame()
         Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
         return;
     }
-
     Random randomWord = new Random();
     int wordIndex = randomWord.Next(dictionary.Length);
     string hiddenWord = dictionary[wordIndex].ToUpper();
@@ -70,8 +66,6 @@ static void StartGame()
     Console.Clear();
     Console.WriteLine("\nИгра началась");
     ProgressGame(HangmanSettings.attempts, hiddenWord);
-    
-
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
@@ -112,7 +106,6 @@ static string ProgressGame(int attempts, string hiddenWord)
                 userWord[i] = letter;
                 isLetterInWord = true;
             }
-
         }
         Console.Clear();
         Console.WriteLine($"\n{new string(userWord)}");
@@ -126,8 +119,6 @@ static string ProgressGame(int attempts, string hiddenWord)
             Console.WriteLine("\nВы уже использовали эту букву!");
             Console.ResetColor();
             continue;
-            
-
         }
         else
         {
@@ -144,14 +135,9 @@ static string ProgressGame(int attempts, string hiddenWord)
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nВы использовали неверную букву!");
             Console.ResetColor();
-            
-
         }
-        
-
     }
     DrawingHangman(attempts);
- 
     WinOrLoseGame(userWord, hiddenWord);
     return new string(userWord);
 }
