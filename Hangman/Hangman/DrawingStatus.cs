@@ -1,12 +1,11 @@
-﻿namespace Hangman
+﻿namespace Hangman;
+
+enum DrawingStatus
 {
-    enum DrawingStatus
-    {
-        Head,
-        Body,
-        RightHand,
-        LeftHand,
-        RightLeg,
-        LeftLeg,
-    }
+    Head,
+    Body,
+    RightHand,
+    LeftHand,
+    RightLeg,
+    LeftLeg,
 }
