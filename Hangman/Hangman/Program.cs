@@ -1,14 +1,19 @@
 ﻿using Hangman;
+
+HangmanSettings.ConsoleHangman();
 while (true)
 {
-    GameStatus menuItem = Menu();
+    
+    GameStatus menuItem = NewGameOrExit();
     switch (menuItem)
     {
         case GameStatus.Start:
             StartGame();
             break;
         case GameStatus.Exit:
-            Console.Clear(); Console.WriteLine("\nДо новых встреч!");
+            Console.Clear();
+            Console.WriteLine("\nДо новых встреч!");
+            Console.ReadKey();
             return;
         default:
             Console.WriteLine("\nВведите число 1 или 2");
@@ -16,10 +21,15 @@ while (true)
     }
 }
 
-static GameStatus Menu()
+static GameStatus NewGameOrExit()
 {
+    Console.Clear();
     Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
     Console.WriteLine();
+    Console.CancelKeyPress += (sender, args) =>
+    {
+        args.Cancel = true;
+    };
     string input = Console.ReadLine();
     bool isValidChoice = GameStatus.TryParse(input, out GameStatus menuItem);
     return menuItem;
@@ -27,12 +37,12 @@ static GameStatus Menu()
 
 static void StartGame()
 {
-    const string fileName = "hangman.txt";
+    
     string[] dictionary = new string[0];
 
     try
     {
-        dictionary = File.ReadAllLines(fileName);
+        dictionary = File.ReadAllLines(HangmanSettings.fileName);
     }
     catch (FileNotFoundException)
     {
@@ -40,7 +50,7 @@ static void StartGame()
     }
     catch (IOException)
     {
-        Console.WriteLine("Не удалось получить доступ к файлам игры.Проверьте, не открыты ли они в другой программе, и попробуйте снова.");
+        Console.WriteLine("Не удалось получить доступ к файлам игры. Проверьте, не открыты ли они в другой программе, и попробуйте снова.");
     }
     catch (Exception)
     {
@@ -49,110 +59,118 @@ static void StartGame()
 
     if (dictionary.Length == 0)
     {
-        Console.WriteLine("В файле нет слов.Игра невозможна.До новых встреч!");
+        Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
         return;
     }
+
     Random randomWord = new Random();
     int wordIndex = randomWord.Next(dictionary.Length);
-    string hiddenWord = dictionary[wordIndex];
-    int attempts = 6;
+    string hiddenWord = dictionary[wordIndex].ToUpper();
+
     Console.Clear();
     Console.WriteLine("\nИгра началась");
-    ProgressGame(attempts, hiddenWord);
+    ProgressGame(HangmanSettings.attempts, hiddenWord);
+    
 
-}
-
-static char[] GenereticWord(string hiddenWord)
-{
-    char[] userWord = new char[hiddenWord.Length];
-    userWord = new string('*', hiddenWord.Length).ToCharArray();
-    Console.WriteLine(new string(userWord) + "\n");
-    return userWord;
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
 {
     List<char> usedLetters = new List<char>();
-    var userWord = GenereticWord(hiddenWord);
+    var userWord = new string('*', hiddenWord.Length).ToCharArray();
+    Console.WriteLine($"{new string(userWord)}\n");
     while (attempts > 0 && new string(userWord) != hiddenWord)
     {
         bool letterUsedBefore = false;
+        DrawingHangman(attempts);
         Console.WriteLine($"\nУ вас осталось {attempts} попыток");
         Console.WriteLine("\nВведите букву:");
-
+        Console.CancelKeyPress += (sender, args) =>
+        {
+            args.Cancel = true;
+        };
         bool isLetterInWord = false;
-
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
-
+        
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            Console.WriteLine("Использование символов запрещено ,используйте только буквы кириллицы!");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Использование символов запрещено, используйте только буквы кириллицы!");
+            Console.ResetColor();
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
-
-        for (int i = 0; i < usedLetters.Count; i++)
+        if (usedLetters.Contains(letter))
         {
-            if (letter == usedLetters[i])
-            {
-                letterUsedBefore = true;
-                break;
-            }
+            letterUsedBefore = true;
         }
-
-
         for (int i = 0; i < hiddenWord.Length; i++)
         {
             if (hiddenWord[i] == letter)
             {
-
                 userWord[i] = letter;
                 isLetterInWord = true;
-
             }
 
         }
-
         Console.Clear();
         Console.WriteLine($"\n{new string(userWord)}");
 
         if (letterUsedBefore)
         {
-            Console.WriteLine($"Использованные буквы:\n{String.Join(' ', usedLetters)}");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nВы уже использовали эту букву!");
+            Console.ResetColor();
             continue;
+            
+
         }
         else
         {
             usedLetters.Add(letter);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
 
-            Console.WriteLine($"Использованные буквы:\n{String.Join(' ', usedLetters)}");
+            Console.ResetColor();
+            
         }
-
         if (!isLetterInWord)
         {
             attempts--;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nВы использовали неверную букву!");
-            DrawingHangman(attempts);
+            Console.ResetColor();
+            
 
         }
+        
+
     }
-
+    DrawingHangman(attempts);
+ 
     WinOrLoseGame(userWord, hiddenWord);
-
     return new string(userWord);
-
 }
 
 static void WinOrLoseGame(char[] userWord, string hiddenWord)
 {
     if (new string(userWord) == hiddenWord)
     {
-        Console.WriteLine($"\nТы выиграл!\nЗагаданное слово - {hiddenWord}");
+        Console.Clear();
+        Console.WriteLine($"\nВы выиграли!\nЗагаданное слово - {hiddenWord}");
+        Console.WriteLine("\nНажмите на любую клавишу для выхода в меню");
+        Console.ReadKey();
     }
     else
     {
-        Console.WriteLine($"\nТы Проиграл!\nЗагаданное слово - {hiddenWord}");
+        Console.Clear();
+        Console.WriteLine($"\nВы проиграли!\nЗагаданное слово - {hiddenWord}");
+        Console.WriteLine("\nНажмите на любую клавишу для выхода в меню");
+        Console.ReadKey();
     }
 }
 
@@ -161,22 +179,25 @@ static void DrawingHangman(int attempts)
     switch (attempts)
     {
         case (int)DrawingStatus.Head:
-            Console.WriteLine(Drawing.attemptSix);
+            Console.WriteLine(Drawing.AttemptSix);
             break;
         case (int)DrawingStatus.Body:
-            Console.WriteLine(Drawing.attemptFive);
+            Console.WriteLine(Drawing.AttemptFive);
             break;
         case (int)DrawingStatus.RightHand:
-            Console.WriteLine(Drawing.attemptFour);
+            Console.WriteLine(Drawing.AttemptFour);
             break;
         case (int)DrawingStatus.LeftHand:
-            Console.WriteLine(Drawing.attemptThree);
+            Console.WriteLine(Drawing.AttemptThree);
             break;
         case (int)DrawingStatus.RightLeg:
-            Console.WriteLine(Drawing.attemptTwo);
+            Console.WriteLine(Drawing.AttemptTwo);
             break;
         case (int)DrawingStatus.LeftLeg:
-            Console.WriteLine(Drawing.attemptOne);
+            Console.WriteLine(Drawing.AttemptOne);
+            break;
+        default: 
+            Console.WriteLine(Drawing.Pillar);
             break;
     }
 }
