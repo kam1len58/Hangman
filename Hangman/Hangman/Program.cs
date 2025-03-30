@@ -3,7 +3,7 @@
 HangmanSettings.ConsoleHangman();
 while (true)
 {
-    GameStatus menuItem = NewGameOrExit();
+    GameStatus menuItem = Menu.NewGameOrExit();
     switch (menuItem)
     {
         case GameStatus.Start:
@@ -20,19 +20,6 @@ while (true)
     }
 }
 
-static GameStatus NewGameOrExit()
-{
-    Console.Clear();
-    Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
-    Console.WriteLine();
-    Console.CancelKeyPress += (sender, args) =>
-    {
-        args.Cancel = true;
-    };
-    string input = Console.ReadLine();
-    bool isValidChoice = GameStatus.TryParse(input, out GameStatus menuItem);
-    return menuItem;
-}
 
 static void StartGame()
 {
@@ -135,6 +122,7 @@ static string ProgressGame(int attempts, string hiddenWord)
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nВы использовали неверную букву!");
             Console.ResetColor();
+
         }
     }
     DrawingHangman(attempts);
