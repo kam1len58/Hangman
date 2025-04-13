@@ -1,9 +1,17 @@
 ﻿using Hangman;
+using System.Collections.Immutable;
 
+ImmutableList<string> menuOptions = ImmutableList.Create
+        (
+            "Новая игра",
+            "Выйти"
+        );
+
+GameStatus[] gameStatus= { GameStatus.Start, GameStatus.Exit };
 HangmanSettings.ConsoleHangman();
 while (true)
 {
-    GameStatus menuItem = Menu.NewGameOrExit();
+    GameStatus menuItem = Menu.MenuItems(menuOptions, gameStatus); 
     switch (menuItem)
     {
         case GameStatus.Start:
@@ -19,7 +27,6 @@ while (true)
             break;
     }
 }
-
 
 static void StartGame()
 {
@@ -175,6 +182,9 @@ static void DrawingHangman(int attempts)
             break;
     }
 }
+
+
+
 
 
 

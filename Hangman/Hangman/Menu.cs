@@ -4,17 +4,24 @@ namespace Hangman;
 
 public static class Menu
 {
-    public static GameStatus NewGameOrExit()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="menuOptions"></param>
+    /// <param name="menuItems"></param>
+    /// <returns>Ошибка количества пунктов меню</returns>
+    /// <exception cref="System.UnacceptableNumberOfMenuItemsIsAnException">Недопустимое количество пунктов меню</exception>
+
+    public static T MenuItems<T>(ImmutableList<string> menuOptions, T[] menuItems) where T : Enum
     {
+        if(menuOptions.Count<=1)
+        {
+            throw new IncorrectMenuInputDataException("Недопустимое количество пунктов меню");
+        }
         Console.Clear();
         int option = 0;
-        ImmutableList<string> menuOptions = ImmutableList.Create
-        (
-            "Новая игра",
-            "Выйти",
-            "Игра на двоих"     
-        );
-        while(true)
+        while (true)
         {
             for (int i = 0; i < menuOptions.Count; i++)
             {
@@ -25,8 +32,8 @@ public static class Menu
                     Console.WriteLine(menuOptions[i]);
                 }
                 else
-                { 
-                Console.WriteLine(menuOptions[i]);
+                {
+                    Console.WriteLine(menuOptions[i]);
                 }
                 Console.ResetColor();
             }
@@ -54,19 +61,16 @@ public static class Menu
                     };
                     break;
                 case ConsoleKey.Enter:
-                    if (option == 0)
-                    {
-                        return GameStatus.Start;
-                    }
-                    else if (option == 1)
-                    {
-                        return GameStatus.Exit;
-                    }
-                    break;
+                    return menuItems[option];
             }
-            Console.Clear(); 
-        } 
+            Console.Clear();
+        }
     }
+
 }
+
+
+
+
 
 
