@@ -5,12 +5,12 @@ public static class Menu
     /// <summary>
     /// Метод для работы с меню
     /// </summary>
-    /// <typeparam name="TMenuItem">Тип перечисления пунктов меню</typeparam>
-    /// <param name="menuItems">Массив-кортеж, где первое поле- строка пункта меню, а второе- enum-константа для идентификации пункта меню</param>
+    /// <typeparam name="TCallMenu">Тип перечисления пунктов меню</typeparam>
+    /// <param name="menuItems">Массив-кортеж, где первое поле- строка пункта меню, а второе enum-константа для идентификации пункта меню</param>
     /// <returns>Данный метод возвращает enum-константу выбранного пункта меню</returns>
-    /// <exception cref="IncorrectMenuInputDataException">Ошибка которая возникает при недопустимом кол-ве пунктов меню</exception>
+    /// <exception cref="IncorrectMenuInputDataException">Ошибка возникает при недопустимом кол-ве пунктов меню</exception>
 
-    public static TMenuItem MenuItems<TMenuItem>((string , TMenuItem)[] menuItems) where TMenuItem : Enum
+    public static TCallMenu MenuItems<TCallMenu>((string, TCallMenu)[] menuItems) where TCallMenu : Enum
     {
         if (menuItems.Length <= 1)
         {
@@ -45,8 +45,7 @@ public static class Menu
                     else
                     {
                         option--;
-                    }
-                    ;
+                    };
                     break;
                 case ConsoleKey.DownArrow:
                     if (option == menuItems.Length - 1)
@@ -56,8 +55,7 @@ public static class Menu
                     else
                     {
                         option++;
-                    }
-                    ;
+                    };
                     break;
                 case ConsoleKey.Enter:
                     return menuItems[option].Item2;
@@ -65,7 +63,6 @@ public static class Menu
             Console.Clear();
         }
     }
-
 }
 
 

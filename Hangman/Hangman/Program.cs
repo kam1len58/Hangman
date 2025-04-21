@@ -1,6 +1,6 @@
 ﻿using Hangman;
 
-(string, GameStatus) [] menuItems = {("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit)};
+(string, GameStatus)[] menuItems = { ("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit) };
 HangmanSettings.ConsoleHangman();
 while (true)
 {
