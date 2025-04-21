@@ -12,7 +12,6 @@ public static class Menu
 
     public static TMenuItem MenuItems<TMenuItem>((string , TMenuItem)[] menuItems) where TMenuItem : Enum
     {
-        
         if (menuItems.Length <= 1)
         {
             throw new IncorrectMenuInputDataException("Недопустимое количество пунктов меню");
@@ -22,7 +21,6 @@ public static class Menu
         while (true)
         {
             for (int i = 0; i < menuItems.Length; i++)
-
             {
                 if (i == option)
                 {
@@ -54,7 +52,6 @@ public static class Menu
                     if (option == menuItems.Length - 1)
                     {
                         option = 0;
-
                     }
                     else
                     {
