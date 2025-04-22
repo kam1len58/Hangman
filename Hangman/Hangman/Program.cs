@@ -1,4 +1,5 @@
 ﻿using Hangman;
+using System.Diagnostics.Metrics;
 
 (string, GameStatus)[] menuItems = { ("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit) };
 HangmanSettings.ConsoleHangman();
@@ -71,7 +72,6 @@ static string ProgressGame(int attempts, string hiddenWord)
         };
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
-        
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
@@ -123,6 +123,9 @@ static string ProgressGame(int attempts, string hiddenWord)
             Console.ResetColor();
 
         }
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"Вы нажали на букву - {letter}");
+        Console.ResetColor();
     }
     DrawingHangman(attempts);
     WinOrLoseGame(userWord, hiddenWord);
