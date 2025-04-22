@@ -134,9 +134,7 @@ static string ProgressGame(int attempts, string hiddenWord)
             usedLetters.Add(letter);
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
-
-            Console.ResetColor();
-            
+            Console.ResetColor();   
         }
         if (!isLetterInWord)
         {
@@ -144,11 +142,10 @@ static string ProgressGame(int attempts, string hiddenWord)
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nВы использовали неверную букву!");
             Console.ResetColor();
-            
-
         }
-        
-
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"Вы нажали на букву - {letter}");
+        Console.ResetColor();
     }
     DrawingHangman(attempts);
  
