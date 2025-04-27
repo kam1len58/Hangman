@@ -1,10 +1,11 @@
 ﻿using Hangman;
+using System;
+using System.ComponentModel;
 
-HangmanSettings.ConsoleHangman();
+SetSettings.SetConsoleSize();
 while (true)
 {
-    
-    GameStatus menuItem = NewGameOrExit();
+    GameStatus menuItem = Call();
     switch (menuItem)
     {
         case GameStatus.Start:
@@ -21,28 +22,24 @@ while (true)
     }
 }
 
-static GameStatus NewGameOrExit()
+static GameStatus Call()
 {
     Console.Clear();
     Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
     Console.WriteLine();
-    Console.CancelKeyPress += (sender, args) =>
-    {
-        args.Cancel = true;
-    };
-    string input = Console.ReadLine();
+    string? input = Console.ReadLine();
     bool isValidChoice = GameStatus.TryParse(input, out GameStatus menuItem);
     return menuItem;
 }
 
 static void StartGame()
 {
-    
+
     string[] dictionary = new string[0];
 
     try
     {
-        dictionary = File.ReadAllLines(HangmanSettings.fileName);
+        dictionary = ReadingDictionary();
     }
     catch (FileNotFoundException)
     {
@@ -66,12 +63,9 @@ static void StartGame()
     Random randomWord = new Random();
     int wordIndex = randomWord.Next(dictionary.Length);
     string hiddenWord = dictionary[wordIndex].ToUpper();
-
     Console.Clear();
-    Console.WriteLine("\nИгра началась");
-    ProgressGame(HangmanSettings.attempts, hiddenWord);
-    
-
+    Console.WriteLine("\nИгра началась\n");
+    ProgressGame(SetSettings.attempts, hiddenWord);
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
@@ -79,32 +73,26 @@ static string ProgressGame(int attempts, string hiddenWord)
     List<char> usedLetters = new List<char>();
     var userWord = new string('*', hiddenWord.Length).ToCharArray();
     Console.WriteLine($"{new string(userWord)}\n");
+
     while (attempts > 0 && new string(userWord) != hiddenWord)
     {
         bool letterUsedBefore = false;
         DrawingHangman(attempts);
         Console.WriteLine($"\nУ вас осталось {attempts} попыток");
         Console.WriteLine("\nВведите букву:");
-        Console.CancelKeyPress += (sender, args) =>
-        {
-            args.Cancel = true;
-        };
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
-        
+
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Использование символов запрещено, используйте только буквы кириллицы!");
-            Console.ResetColor();
+            PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
-        if (usedLetters.Contains(letter))
-        {
-            letterUsedBefore = true;
-        }
+
+        letterUsedBefore = usedLetters.Contains(letter) ? true : false;
+
         for (int i = 0; i < hiddenWord.Length; i++)
         {
             if (hiddenWord[i] == letter)
@@ -112,48 +100,41 @@ static string ProgressGame(int attempts, string hiddenWord)
                 userWord[i] = letter;
                 isLetterInWord = true;
             }
-
         }
+
         Console.Clear();
         Console.WriteLine($"\n{new string(userWord)}");
 
         if (letterUsedBefore)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
-            Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nВы уже использовали эту букву!");
-            Console.ResetColor();
+            PrintLetterStatus(usedLetters);
             continue;
-            
-
         }
         else
         {
             usedLetters.Add(letter);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
-            Console.ResetColor();   
+            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
         }
+
         if (!isLetterInWord)
         {
             attempts--;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nВы использовали неверную букву!");
-            Console.ResetColor();
+            PrintColoutText("Вы использовали неверную букву!", ConsoleColor.Red);
         }
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"Вы нажали на букву - {letter}");
-        Console.ResetColor();
+        PrintColoutText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
     }
     DrawingHangman(attempts);
- 
-    WinOrLoseGame(userWord, hiddenWord);
+    PrintGameResult(userWord, hiddenWord);
     return new string(userWord);
 }
 
-static void WinOrLoseGame(char[] userWord, string hiddenWord)
+static void PrintLetterStatus(List<char> usedLetters)
+{
+    PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+    PrintColoutText("Вы уже использовали эту букву!", ConsoleColor.Red);
+}
+
+static void PrintGameResult(char[] userWord, string hiddenWord)
 {
     if (new string(userWord) == hiddenWord)
     {
@@ -173,32 +154,31 @@ static void WinOrLoseGame(char[] userWord, string hiddenWord)
 
 static void DrawingHangman(int attempts)
 {
-    switch (attempts)
+    string drawing = attempts switch
     {
-        case (int)DrawingStatus.Head:
-            Console.WriteLine(Drawing.AttemptSix);
-            break;
-        case (int)DrawingStatus.Body:
-            Console.WriteLine(Drawing.AttemptFive);
-            break;
-        case (int)DrawingStatus.RightHand:
-            Console.WriteLine(Drawing.AttemptFour);
-            break;
-        case (int)DrawingStatus.LeftHand:
-            Console.WriteLine(Drawing.AttemptThree);
-            break;
-        case (int)DrawingStatus.RightLeg:
-            Console.WriteLine(Drawing.AttemptTwo);
-            break;
-        case (int)DrawingStatus.LeftLeg:
-            Console.WriteLine(Drawing.AttemptOne);
-            break;
-        default: 
-            Console.WriteLine(Drawing.Pillar);
-            break;
-    }
+        (int)DrawingStatus.Head => Drawing.AttemptSix,
+        (int)DrawingStatus.Body => Drawing.AttemptFive,
+        (int)DrawingStatus.RightHand => Drawing.AttemptFour,
+        (int)DrawingStatus.LeftHand => Drawing.AttemptThree,
+        (int)DrawingStatus.RightLeg => Drawing.AttemptTwo,
+        (int)DrawingStatus.LeftLeg => Drawing.AttemptOne,
+        _ => Drawing.Pillar,
+    };
+    Console.WriteLine(drawing);
 }
 
+static string[] ReadingDictionary()
+{
+    return File.ReadAllLines(SetSettings.fileName);
+}
+
+static void PrintColoutText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+{
+    Console.ForegroundColor = consoleColor;
+    Console.BackgroundColor= background;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
 
 
 
