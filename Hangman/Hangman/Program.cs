@@ -89,9 +89,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Использование символов запрещено, используйте только буквы кириллицы!");
-            Console.ResetColor();
+            PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -112,22 +110,14 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
-            Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nВы уже использовали эту букву!");
-            Console.ResetColor();
+            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
+            PrintColoutText("Вы уже использовали эту букву!\n", ConsoleColor.Red);
             continue;
         }
         else
         {
             usedLetters.Add(letter);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Использованные буквы:\n{string.Join(' ', usedLetters)}");
-
-            Console.ResetColor();
-            
+            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);   
         }
         if (!isLetterInWord)
         {
@@ -188,6 +178,13 @@ static void DrawingHangman(int attempts)
     }
 }
 
+static void PrintColoutText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+{
+    Console.ForegroundColor = consoleColor;
+    Console.BackgroundColor = background;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
 
 
 
