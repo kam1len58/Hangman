@@ -36,7 +36,6 @@ static void StartGame()
 {
 
     string[] dictionary = new string[0];
-
     try
     {
         dictionary = ReadingDictionary();
@@ -59,7 +58,6 @@ static void StartGame()
         Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
         return;
     }
-
     Random randomWord = new Random();
     int wordIndex = randomWord.Next(dictionary.Length);
     string hiddenWord = dictionary[wordIndex].ToUpper();
