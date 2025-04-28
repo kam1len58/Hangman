@@ -1,8 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿namespace Hangman;
 
-namespace Hangman;
-
-public class IncorrectMenuInputDataException : Exception
+public class IncorrectMenuInputDataException : ArgumentException
 {
     public IncorrectMenuInputDataException()
     {  
@@ -13,7 +11,7 @@ public class IncorrectMenuInputDataException : Exception
     {
     }
 
-    public IncorrectMenuInputDataException(string message, Exception inner)
+    public IncorrectMenuInputDataException(string message, ArgumentException inner)
         : base(message, inner)
     {
 

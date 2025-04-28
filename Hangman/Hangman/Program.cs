@@ -1,11 +1,10 @@
 ﻿using Hangman;
-using System.Diagnostics.Metrics;
 
-(string, GameStatus)[] menuItems = { ("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit) };
+(string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit)];
 HangmanSettings.ConsoleHangman();
 while (true)
 {
-    switch (Menu.MenuItems(menuItems))
+    switch (Menu.SelectFromMenu(menuItems))
     {
         case GameStatus.Start:
             StartGame();
@@ -75,7 +74,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            ConsoleWorker.PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -96,26 +95,21 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
-            PrintColoutText("Вы уже использовали эту букву!\n", ConsoleColor.Red);
+            ConsoleWorker.PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColoutText("Вы уже использовали эту букву!\n", ConsoleColor.Red);
             continue;
         }
         else
         {
             usedLetters.Add(letter);
-            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);   
+            ConsoleWorker.PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);   
         }
         if (!isLetterInWord)
         {
             attempts--;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nВы использовали неверную букву!");
-            Console.ResetColor();
-
+            ConsoleWorker.PrintColoutText("\nВы использовали неверную букву!", ConsoleColor.Red);
         }
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"Вы нажали на букву - {letter}");
-        Console.ResetColor();
+        ConsoleWorker.PrintColoutText($"Вы нажали на букву - {letter}\n", ConsoleColor.Cyan);
     }
     DrawingHangman(attempts);
     WinOrLoseGame(userWord, hiddenWord);
@@ -168,13 +162,7 @@ static void DrawingHangman(int attempts)
     }
 }
 
-static void PrintColoutText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
-{
-    Console.ForegroundColor = consoleColor;
-    Console.BackgroundColor = background;
-    Console.WriteLine(text);
-    Console.ResetColor();
-}
+
 
 
 

@@ -9,8 +9,7 @@ public static class Menu
     /// <param name="menuItems">Массив-кортеж, где первое поле- строка пункта меню, а второе enum-константа для идентификации пункта меню</param>
     /// <returns>Данный метод возвращает enum-константу выбранного пункта меню</returns>
     /// <exception cref="IncorrectMenuInputDataException">Ошибка возникает при недопустимом кол-ве пунктов меню</exception>
-
-    public static TCallMenu MenuItems<TCallMenu>((string, TCallMenu)[] menuItems) where TCallMenu : Enum
+    public static TCallMenu SelectFromMenu<TCallMenu>((string MenuOptions, TCallMenu Action)[] menuItems) where TCallMenu : Enum
     {
         if (menuItems.Length <= 1)
         {
@@ -24,41 +23,25 @@ public static class Menu
             {
                 if (i == option)
                 {
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.WriteLine(menuItems[i].Item1);
+                    ConsoleHangman.PrintColoutText(menuItems[i].MenuOptions, ConsoleColor.Black, ConsoleColor.Gray);
                 }
                 else
                 {
-                    Console.WriteLine(menuItems[i].Item1);
+                    Console.WriteLine(menuItems[i].MenuOptions);
                 }
-                Console.ResetColor();
             }
+
             ConsoleKey key = Console.ReadKey().Key;
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    if (option == 0)
-                    {
-                        option = menuItems.Length - 1;
-                    }
-                    else
-                    {
-                        option--;
-                    };
+                    option = option == 0 ? option = menuItems.Length - 1 : option-1;
                     break;
                 case ConsoleKey.DownArrow:
-                    if (option == menuItems.Length - 1)
-                    {
-                        option = 0;
-                    }
-                    else
-                    {
-                        option++;
-                    };
+                    option = option == menuItems.Length - 1 ? option = 0 : option+1;
                     break;
                 case ConsoleKey.Enter:
-                    return menuItems[option].Item2;
+                    return menuItems[option].Action;
             }
             Console.Clear();
         }
