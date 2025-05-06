@@ -2,7 +2,7 @@
 
 static class ConsoleWorker
 {
-    public static void PrintColoutText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+    public static void PrintColorText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
     {
         Console.ForegroundColor = consoleColor;
         Console.BackgroundColor = background;

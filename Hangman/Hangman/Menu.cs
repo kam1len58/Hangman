@@ -23,7 +23,7 @@ public static class Menu
             {
                 if (i == option)
                 {
-                    ConsoleHangman.PrintColoutText(menuItems[i].MenuOptions, ConsoleColor.Black, ConsoleColor.Gray);
+                    ConsoleWorker.PrintColorText(menuItems[i].MenuOptions, ConsoleColor.Black, ConsoleColor.Gray);
                 }
                 else
                 {
@@ -32,17 +32,17 @@ public static class Menu
             }
 
             ConsoleKey key = Console.ReadKey().Key;
-            switch (key)
+            option = key switch
             {
-                case ConsoleKey.UpArrow:
-                    option = option == 0 ? option = menuItems.Length - 1 : option-1;
-                    break;
-                case ConsoleKey.DownArrow:
-                    option = option == menuItems.Length - 1 ? option = 0 : option+1;
-                    break;
-                case ConsoleKey.Enter:
-                    return menuItems[option].Action;
+                ConsoleKey.UpArrow => option == 0 ? menuItems.Length - 1 : option - 1,
+                ConsoleKey.DownArrow => option == menuItems.Length - 1 ? 0 : option + 1,
+                _ => option
+            };
+            if (key == ConsoleKey.Enter)
+            {
+                return menuItems[option].Action;
             }
+
             Console.Clear();
         }
     }

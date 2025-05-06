@@ -74,7 +74,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            ConsoleWorker.PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -95,21 +95,21 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            ConsoleWorker.PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-            ConsoleWorker.PrintColoutText("Вы уже использовали эту букву!\n", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColorText("Вы уже использовали эту букву!\n", ConsoleColor.Red);
             continue;
         }
         else
         {
             usedLetters.Add(letter);
-            ConsoleWorker.PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);   
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);   
         }
         if (!isLetterInWord)
         {
             attempts--;
-            ConsoleWorker.PrintColoutText("\nВы использовали неверную букву!", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText("\nВы использовали неверную букву!", ConsoleColor.Red);
         }
-        ConsoleWorker.PrintColoutText($"Вы нажали на букву - {letter}\n", ConsoleColor.Cyan);
+        ConsoleWorker.PrintColorText($"Вы нажали на букву - {letter}\n", ConsoleColor.Cyan);
     }
     DrawingHangman(attempts);
     WinOrLoseGame(userWord, hiddenWord);
