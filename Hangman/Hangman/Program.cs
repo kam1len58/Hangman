@@ -1,11 +1,9 @@
 ﻿using Hangman;
-using System;
-using System.ComponentModel;
 
-SetSettings.SetConsoleSize();
+GameSettings.SetConsoleSize();
 while (true)
 {
-    GameStatus menuItem = Call();
+    GameStatus menuItem = CallMenu();
     switch (menuItem)
     {
         case GameStatus.Start:
@@ -22,13 +20,13 @@ while (true)
     }
 }
 
-static GameStatus Call()
+static GameStatus CallMenu()
 {
     Console.Clear();
     Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
     Console.WriteLine();
     string? input = Console.ReadLine();
-    bool isValidChoice = GameStatus.TryParse(input, out GameStatus menuItem);
+    GameStatus.TryParse(input, out GameStatus menuItem);
     return menuItem;
 }
 
@@ -63,7 +61,7 @@ static void StartGame()
     string hiddenWord = dictionary[wordIndex].ToUpper();
     Console.Clear();
     Console.WriteLine("\nИгра началась\n");
-    ProgressGame(SetSettings.attempts, hiddenWord);
+    ProgressGame(GameSettings.Attempts, hiddenWord);
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
@@ -84,7 +82,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            PrintColoutText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -111,15 +109,15 @@ static string ProgressGame(int attempts, string hiddenWord)
         else
         {
             usedLetters.Add(letter);
-            PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
         }
 
         if (!isLetterInWord)
         {
             attempts--;
-            PrintColoutText("Вы использовали неверную букву!", ConsoleColor.Red);
+            PrintColorText("Вы использовали неверную букву!", ConsoleColor.Red);
         }
-        PrintColoutText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
+        PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
     }
     DrawingHangman(attempts);
     PrintGameResult(userWord, hiddenWord);
@@ -128,8 +126,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
 static void PrintLetterStatus(List<char> usedLetters)
 {
-    PrintColoutText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-    PrintColoutText("Вы уже использовали эту букву!", ConsoleColor.Red);
+    PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+    PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
 }
 
 static void PrintGameResult(char[] userWord, string hiddenWord)
@@ -167,10 +165,10 @@ static void DrawingHangman(int attempts)
 
 static string[] ReadingDictionary()
 {
-    return File.ReadAllLines(SetSettings.fileName);
+    return File.ReadAllLines(GameSettings.FileName);
 }
 
-static void PrintColoutText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+static void PrintColorText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
 {
     Console.ForegroundColor = consoleColor;
     Console.BackgroundColor= background;

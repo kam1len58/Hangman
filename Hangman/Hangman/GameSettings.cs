@@ -1,9 +1,9 @@
 ﻿namespace Hangman;
 
-public static class SetSettings
+public static class GameSettings
 {
-    public const string fileName = "hangman.txt";
-    public const int attempts = 6;
+    public const string FileName = "hangman.txt";
+    public const int Attempts = 6;
     public static void SetConsoleSize()
     {
         if (OperatingSystem.IsWindows())
