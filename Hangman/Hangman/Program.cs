@@ -1,6 +1,7 @@
 ﻿using Hangman;
+using System.Diagnostics.Metrics;
 
-(string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit)];
+(string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit), ("Игра на двоих", GameStatus.TwoPlayerGame)];
 HangmanSettings.ConsoleHangman();
 while (true)
 {
@@ -14,6 +15,9 @@ while (true)
             Console.WriteLine("\nДо новых встреч!");
             Console.ReadKey();
             return;
+        case GameStatus.TwoPlayerGame:
+            TwoPlayerGame();
+            break;
         default:
             Console.WriteLine("\nВведите число 1 или 2");
             break;
@@ -102,7 +106,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         else
         {
             usedLetters.Add(letter);
-            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);   
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
         }
         if (!isLetterInWord)
         {
@@ -156,10 +160,41 @@ static void DrawingHangman(int attempts)
         case (int)DrawingStatus.LeftLeg:
             Console.WriteLine(Drawing.AttemptOne);
             break;
-        default: 
+        default:
             Console.WriteLine(Drawing.Pillar);
             break;
     }
+}
+
+static void TwoPlayerGame()
+{
+    string? hiddenWord;
+    do
+    {
+        Console.Clear();
+        Console.WriteLine("Игрок 1, загадайте слово:\n");
+        bool validLetter = true;
+        hiddenWord = Console.ReadLine();
+        foreach (char letter in hiddenWord!)
+        {
+            if (!Alphabet.allowedSymbols.Contains(letter))
+            {
+                validLetter = false;
+                break;
+            }
+        }
+        if (!validLetter)
+        {
+            hiddenWord = null;
+            ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
+            Thread.Sleep(300);
+        }
+    }
+    while (hiddenWord == null || hiddenWord.Length == 0);
+
+    Console.Clear();
+    Console.WriteLine("Игрок 2, игра началась, отгадайте слово\n");
+    ProgressGame(HangmanSettings.attempts, hiddenWord.ToUpper());
 }
 
 
