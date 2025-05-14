@@ -1,4 +1,5 @@
 ﻿using Hangman;
+using System.Diagnostics.Metrics;
 
 (string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit), ("Игра на двоих", GameStatus.TwoPlayerGame)];
 HangmanSettings.ConsoleHangman();
@@ -172,7 +173,22 @@ static void TwoPlayerGame()
     {
         Console.Clear();
         Console.WriteLine("Игрок 1, загадайте слово:\n");
+        bool validLetter = true;
         hiddenWord = Console.ReadLine();
+        foreach (char letter in hiddenWord!)
+        {
+            if (!Alphabet.allowedSymbols.Contains(letter))
+            {
+                validLetter = false;
+                break;
+            }
+        }
+        if (!validLetter)
+        {
+            hiddenWord = null;
+            ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
+            Thread.Sleep(300);
+        }
     }
     while (hiddenWord == null || hiddenWord.Length == 0);
 
