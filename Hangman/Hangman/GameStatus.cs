@@ -1,7 +1,8 @@
 ﻿namespace Hangman;
 
-enum GameStatus
+public enum GameStatus
 {
     Start = 1,
     Exit
 }
+
