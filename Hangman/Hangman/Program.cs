@@ -1,8 +1,7 @@
 ﻿using Hangman;
-using System.Diagnostics.Metrics;
 
 (string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit), ("Игра на двоих", GameStatus.TwoPlayerGame)];
-HangmanSettings.ConsoleHangman();
+GameSettings.SetConsoleSettings();
 while (true)
 {
     switch (Menu.SelectFromMenu(menuItems))
@@ -29,7 +28,7 @@ static void StartGame()
     string[] dictionary = new string[0];
     try
     {
-        dictionary = File.ReadAllLines(HangmanSettings.fileName);
+        dictionary = File.ReadAllLines(GameSettings.FileName);
     }
     catch (FileNotFoundException)
     {
@@ -55,7 +54,7 @@ static void StartGame()
 
     Console.Clear();
     Console.WriteLine("\nИгра началась");
-    ProgressGame(HangmanSettings.attempts, hiddenWord);
+    ProgressGame(GameSettings.Attempts, hiddenWord);
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
@@ -75,7 +74,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         };
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
-        if (!Alphabet.allowedSymbols.Contains(letter))
+        if (!Alphabet.AllowedSymbols.Contains(letter))
         {
             Console.Clear();
             ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
@@ -172,29 +171,21 @@ static void TwoPlayerGame()
     do
     {
         Console.Clear();
-        Console.WriteLine("Игрок 1, загадайте слово:\n");
-        bool validLetter = true;
-        hiddenWord = Console.ReadLine();
-        foreach (char letter in hiddenWord!)
-        {
-            if (!Alphabet.allowedSymbols.Contains(letter))
-            {
-                validLetter = false;
-                break;
-            }
-        }
+        ConsoleWorker.PrintColorText("Игрок 1, загадайте слово:\n",ConsoleColor.Gray);
+        hiddenWord = Console.ReadLine()!;
+        bool validLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
         if (!validLetter)
         {
             hiddenWord = null;
             ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
-            Thread.Sleep(300);
+            Thread.Sleep(GameSettings.ErrorDisplayTime);
         }
     }
     while (hiddenWord == null || hiddenWord.Length == 0);
 
     Console.Clear();
-    Console.WriteLine("Игрок 2, игра началась, отгадайте слово\n");
-    ProgressGame(HangmanSettings.attempts, hiddenWord.ToUpper());
+    ConsoleWorker.PrintColorText("Игрок 2, игра началась, отгадайте слово\n", ConsoleColor.Gray);
+    ProgressGame(GameSettings.Attempts, hiddenWord.ToUpper());
 }
 
 
