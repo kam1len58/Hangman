@@ -1,7 +1,7 @@
 ﻿using Hangman;
 
 (string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit)];
-HangmanSettings.ConsoleHangman();
+GameSettings.SetConsoleSettings();
 while (true)
 {
     switch (Menu.SelectFromMenu(menuItems))
@@ -25,7 +25,7 @@ static void StartGame()
     string[] dictionary = new string[0];
     try
     {
-        dictionary = File.ReadAllLines(HangmanSettings.fileName);
+        dictionary = ReadingDictionary();
     }
     catch (FileNotFoundException)
     {
@@ -50,8 +50,8 @@ static void StartGame()
     string hiddenWord = dictionary[wordIndex].ToUpper();
 
     Console.Clear();
-    Console.WriteLine("\nИгра началась");
-    ProgressGame(HangmanSettings.attempts, hiddenWord);
+    Console.WriteLine("\nИгра началась\n");
+    ProgressGame(GameSettings.Attempts, hiddenWord);
 }
 
 static string ProgressGame(int attempts, string hiddenWord)
@@ -71,7 +71,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         };
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
-        if (!Alphabet.allowedSymbols.Contains(letter))
+        if (!Alphabet.AllowedSymbols.Contains(letter))
         {
             Console.Clear();
             ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
@@ -102,7 +102,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         else
         {
             usedLetters.Add(letter);
-            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);   
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
         }
         if (!isLetterInWord)
         {
@@ -136,30 +136,23 @@ static void WinOrLoseGame(char[] userWord, string hiddenWord)
 
 static void DrawingHangman(int attempts)
 {
-    switch (attempts)
+    string drawing = attempts switch
     {
-        case (int)DrawingStatus.Head:
-            Console.WriteLine(Drawing.AttemptSix);
-            break;
-        case (int)DrawingStatus.Body:
-            Console.WriteLine(Drawing.AttemptFive);
-            break;
-        case (int)DrawingStatus.RightHand:
-            Console.WriteLine(Drawing.AttemptFour);
-            break;
-        case (int)DrawingStatus.LeftHand:
-            Console.WriteLine(Drawing.AttemptThree);
-            break;
-        case (int)DrawingStatus.RightLeg:
-            Console.WriteLine(Drawing.AttemptTwo);
-            break;
-        case (int)DrawingStatus.LeftLeg:
-            Console.WriteLine(Drawing.AttemptOne);
-            break;
-        default: 
-            Console.WriteLine(Drawing.Pillar);
-            break;
+        (int)DrawingStatus.Head => Drawing.AttemptSix,
+        (int)DrawingStatus.Body => Drawing.AttemptFive,
+        (int)DrawingStatus.RightHand => Drawing.AttemptFour,
+        (int)DrawingStatus.LeftHand => Drawing.AttemptThree,
+        (int)DrawingStatus.RightLeg => Drawing.AttemptTwo,
+        (int)DrawingStatus.LeftLeg => Drawing.AttemptOne,
+        _ => Drawing.Pillar,
     }
+;
+    Console.WriteLine(drawing);
+}
+
+static string[] ReadingDictionary()
+{
+    return File.ReadAllLines(GameSettings.FileName);
 }
 
 
