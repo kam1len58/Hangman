@@ -21,6 +21,16 @@ while (true)
     }
 }
 
+static GameStatus CallMenu()
+{
+    Console.Clear();
+    Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
+    Console.WriteLine();
+    string? input = Console.ReadLine();
+    GameStatus.TryParse(input, out GameStatus menuItem);
+    return menuItem;
+}
+
 static void StartGame()
 {
 
@@ -73,7 +83,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         if (!Alphabet.allowedSymbols.Contains(letter))
         {
             Console.Clear();
-            ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
