@@ -94,7 +94,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            PrintLetterStatus(usedLetters);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
             continue;
         }
         else
@@ -113,12 +114,6 @@ static string ProgressGame(int attempts, string hiddenWord)
     DrawingHangman(attempts);
     PrintGameResult(userWord, hiddenWord);
     return new string(userWord);
-}
-
-static void PrintLetterStatus(List<char> usedLetters)
-{
-    ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-    ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
 }
 
 static void PrintGameResult(char[] userWord, string hiddenWord)
