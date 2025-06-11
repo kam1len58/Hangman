@@ -79,6 +79,7 @@ static string ProgressGame(int attempts, string hiddenWord)
         Console.WriteLine("\nВведите букву:");
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
+
         if (!Alphabet.AllowedSymbols.Contains(letter))
         {
             Console.Clear();
@@ -159,8 +160,7 @@ static void DrawingHangman(int attempts)
         (int)DrawingStatus.RightLeg => Drawing.AttemptTwo,
         (int)DrawingStatus.LeftLeg => Drawing.AttemptOne,
         _ => Drawing.Pillar,
-    }
-;
+    };
     Console.WriteLine(drawing);
 }
 
