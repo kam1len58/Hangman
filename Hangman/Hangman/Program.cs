@@ -1,6 +1,10 @@
 ﻿using Hangman;
+using System.ComponentModel;
 
-(string, GameStatus)[] menuItems = [("Новая игра", GameStatus.Start), ("Выйти", GameStatus.Exit), ("Игра на двоих", GameStatus.TwoPlayerGame)];
+(string, GameStatus)[] menuItems = [
+    ("Новая игра", GameStatus.Start),
+    ("Выйти", GameStatus.Exit),
+    ("Игра на двоих", GameStatus.TwoPlayerGame)];
 GameSettings.SetConsoleSettings();
 while (true)
 {
@@ -25,10 +29,11 @@ while (true)
 
 static void StartGame()
 {
-    string[] dictionary = new string[0];
+    List<string> dictionary = [];
+
     try
     {
-        dictionary = File.ReadAllLines(GameSettings.FileName);
+        dictionary.AddRange(File.ReadAllLines(GameSettings.FileName));
     }
     catch (FileNotFoundException)
     {
@@ -43,13 +48,13 @@ static void StartGame()
         Console.WriteLine("Исправьте ошибку для продолжения игры!");
     }
 
-    if (dictionary.Length == 0)
+    if (dictionary.Count == 0)
     {
         Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
         return;
     }
     Random randomWord = new Random();
-    int wordIndex = randomWord.Next(dictionary.Length);
+    int wordIndex = randomWord.Next(dictionary.Count);
     string hiddenWord = dictionary[wordIndex].ToUpper();
 
     Console.Clear();
@@ -171,20 +176,13 @@ static void TwoPlayerGame()
     do
     {
         Console.Clear();
-        ConsoleWorker.PrintColorText("Игрок 1, загадайте слово:\n",ConsoleColor.Gray);
-        hiddenWord = Console.ReadLine()!;
-        bool validLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
-        if (!validLetter)
-        {
-            hiddenWord = null;
-            ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
-            Thread.Sleep(GameSettings.ErrorDisplayTime);
-        }
+        Console.WriteLine("Игрок 1, загадайте слово:\n", ConsoleColor.Gray);
+        hiddenWord = ConsoleWorker.InputWord();
     }
     while (hiddenWord == null || hiddenWord.Length == 0);
 
     Console.Clear();
-    ConsoleWorker.PrintColorText("Игрок 2, игра началась, отгадайте слово\n", ConsoleColor.Gray);
+    Console.WriteLine("Игрок 2, игра началась, отгадайте слово\n");
     ProgressGame(GameSettings.Attempts, hiddenWord.ToUpper());
 }
 
