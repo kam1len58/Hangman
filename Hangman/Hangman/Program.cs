@@ -1,9 +1,13 @@
 ﻿using Hangman;
 
-GameSettings.SetConsoleSize();
+(string, GameStatus)[] menuItems = [
+    ("Новая игра", GameStatus.Start),
+    ("Выйти", GameStatus.Exit),
+    ("Игра на двоих", GameStatus.TwoPlayerGame)];
+GameSettings.SetConsoleSettings();
 while (true)
 {
-    GameStatus menuItem = CallMenu();
+    GameStatus menuItem = Menu.SelectFromMenu(menuItems);
     switch (menuItem)
     {
         case GameStatus.Start:
@@ -14,29 +18,22 @@ while (true)
             Console.WriteLine("\nДо новых встреч!");
             Console.ReadKey();
             return;
+        case GameStatus.TwoPlayerGame:
+            StartTwoPlayerMode();
+            break;
         default:
             Console.WriteLine("\nВведите число 1 или 2");
             break;
     }
 }
 
-static GameStatus CallMenu()
-{
-    Console.Clear();
-    Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
-    Console.WriteLine();
-    string? input = Console.ReadLine();
-    GameStatus.TryParse(input, out GameStatus menuItem);
-    return menuItem;
-}
-
 static void StartGame()
 {
+    List<string> wordList = [];
 
-    string[] dictionary = new string[0];
     try
     {
-        dictionary = ReadingDictionary();
+        wordList.AddRange(File.ReadAllLines(GameSettings.FileName));
     }
     catch (FileNotFoundException)
     {
@@ -51,16 +48,16 @@ static void StartGame()
         Console.WriteLine("Исправьте ошибку для продолжения игры!");
     }
 
-    if (dictionary.Length == 0)
+    if (wordList.Count == 0)
     {
         Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
         return;
     }
     Random randomWord = new Random();
-    int wordIndex = randomWord.Next(dictionary.Length);
-    string hiddenWord = dictionary[wordIndex].ToUpper();
+    int wordIndex = randomWord.Next(wordList.Count);
+    string hiddenWord = wordList[wordIndex].ToUpper();
     Console.Clear();
-    Console.WriteLine("\nИгра началась\n");
+    Console.WriteLine("\nИгра началась");
     ProgressGame(GameSettings.Attempts, hiddenWord);
 }
 
@@ -77,12 +74,12 @@ static string ProgressGame(int attempts, string hiddenWord)
         Console.WriteLine($"\nУ вас осталось {attempts} попыток");
         Console.WriteLine("\nВведите букву:");
         bool isLetterInWord = false;
-        char letter = char.ToUpper(Console.ReadKey().KeyChar);
 
-        if (!Alphabet.allowedSymbols.Contains(letter))
+        char letter = char.ToUpper(Console.ReadKey().KeyChar);
+        if (!Alphabet.AllowedSymbols.Contains(letter))
         {
             Console.Clear();
-            PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -109,15 +106,15 @@ static string ProgressGame(int attempts, string hiddenWord)
         else
         {
             usedLetters.Add(letter);
-            PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
         }
 
         if (!isLetterInWord)
         {
             attempts--;
-            PrintColorText("Вы использовали неверную букву!", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText("Вы использовали неверную букву!", ConsoleColor.Red);
         }
-        PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
+        ConsoleWorker.PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
     }
     DrawingHangman(attempts);
     PrintGameResult(userWord, hiddenWord);
@@ -126,8 +123,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
 static void PrintLetterStatus(List<char> usedLetters)
 {
-    PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-    PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
+    ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+    ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
 }
 
 static void PrintGameResult(char[] userWord, string hiddenWord)
@@ -163,18 +160,32 @@ static void DrawingHangman(int attempts)
     Console.WriteLine(drawing);
 }
 
-static string[] ReadingDictionary()
+static void StartTwoPlayerMode()
 {
-    return File.ReadAllLines(GameSettings.FileName);
+    string? hiddenWord;
+    bool validLetter;
+    do
+    {
+        Console.Clear();
+        Console.WriteLine("Игрок 1, загадайте слово:\n");
+        (validLetter, hiddenWord) = ConsoleWorker.TryInputWord();
+        if (!validLetter)
+        {
+            ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
+            Thread.Sleep(GameSettings.ErrorDisplayTime);
+        }
+    }
+    while (hiddenWord == null || hiddenWord.Length == 0);
+
+    Console.Clear();
+    Console.WriteLine("Игрок 2, игра началась, отгадайте слово\n");
+    ProgressGame(GameSettings.Attempts, hiddenWord.ToUpper());
 }
 
-static void PrintColorText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
-{
-    Console.ForegroundColor = consoleColor;
-    Console.BackgroundColor= background;
-    Console.WriteLine(text);
-    Console.ResetColor();
-}
+
+
+
+
 
 
 

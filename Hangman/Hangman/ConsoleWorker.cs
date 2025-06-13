@@ -9,4 +9,15 @@ static class ConsoleWorker
         Console.WriteLine(text);
         Console.ResetColor();
     }
+
+    public static (bool, string?) TryInputWord()
+    {
+        string? hiddenWord = Console.ReadLine()!;
+        bool validLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
+        if (!validLetter)
+        {
+            hiddenWord = null;
+        }
+        return (validLetter, hiddenWord);
+    }
 }

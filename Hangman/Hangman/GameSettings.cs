@@ -4,7 +4,8 @@ public static class GameSettings
 {
     public const string FileName = "hangman.txt";
     public const int Attempts = 6;
-    public static void SetConsoleSize()
+    public const int ErrorDisplayTime = 300;
+    public static void SetConsoleSettings()
     {
         if (OperatingSystem.IsWindows())
         {
