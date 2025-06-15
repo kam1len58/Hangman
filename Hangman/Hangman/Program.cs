@@ -80,10 +80,10 @@ static string ProgressGame(int attempts, string hiddenWord)
         bool isLetterInWord = false;
         char letter = char.ToUpper(Console.ReadKey().KeyChar);
 
-        if (!Alphabet.allowedSymbols.Contains(letter))
+        if (!Alphabet.AllowedSymbols.Contains(letter))
         {
             Console.Clear();
-            PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
+            ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
             Console.WriteLine($"\n{new string(userWord)}");
             continue;
         }
@@ -126,6 +126,12 @@ static string ProgressGame(int attempts, string hiddenWord)
     return new string(userWord);
 }
 
+static void PrintLetterStatus(List<char> usedLetters)
+{
+    PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+    PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
+}
+
 static void PrintGameResult(char[] userWord, string hiddenWord)
 {
     if (new string(userWord) == hiddenWord)
@@ -164,7 +170,13 @@ static string[] ReadingDictionary()
     return File.ReadAllLines(GameSettings.FileName);
 }
 
-
+static void PrintColorText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+{
+    Console.ForegroundColor = consoleColor;
+    Console.BackgroundColor= background;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
 
 
 
