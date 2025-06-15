@@ -4,8 +4,8 @@
 GameSettings.SetConsoleSettings();
 while (true)
 {
-    GameStatus menuItem = CallMenu();
-    switch (menuItem)
+
+    switch (Menu.SelectFromMenu(menuItems))
     {
         case GameStatus.Start:
             StartGame();
@@ -104,7 +104,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            PrintLetterStatus(usedLetters);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
             continue;
         }
         else
@@ -127,8 +128,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
 static void PrintLetterStatus(List<char> usedLetters)
 {
-    ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-    ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
+    PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+    PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
 }
 
 static void PrintGameResult(char[] userWord, string hiddenWord)
@@ -169,10 +170,13 @@ static string[] ReadingDictionary()
     return File.ReadAllLines(GameSettings.FileName);
 }
 
-
-
-
-
+static void PrintColorText(string text, ConsoleColor consoleColor, ConsoleColor background = ConsoleColor.Black)
+{
+    Console.ForegroundColor = consoleColor;
+    Console.BackgroundColor= background;
+    Console.WriteLine(text);
+    Console.ResetColor();
+}
 
 
 
