@@ -12,12 +12,8 @@ static class ConsoleWorker
 
     public static (bool, string?) TryInputWord()
     {
-        string? hiddenWord = Console.ReadLine()!;
-        bool validLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
-        if (!validLetter)
-        {
-            hiddenWord = null;
-        }
-        return (validLetter, hiddenWord);
+        string hiddenWord = Console.ReadLine()!;
+        bool isValidLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
+        return (isValidLetter, hiddenWord);
     }
 }

@@ -163,23 +163,23 @@ static void DrawingHangman(int attempts)
 static void StartTwoPlayerMode()
 {
     string? hiddenWord;
-    bool validLetter;
+    bool isValidWord;
     do
     {
         Console.Clear();
         Console.WriteLine("Игрок 1, загадайте слово:\n");
-        (validLetter, hiddenWord) = ConsoleWorker.TryInputWord();
-        if (!validLetter)
+        (isValidWord, hiddenWord) = ConsoleWorker.TryInputWord();
+        if (!isValidWord)
         {
             ConsoleWorker.PrintColorText("Используйте только русские буквы!", ConsoleColor.Red);
             Thread.Sleep(GameSettings.ErrorDisplayTime);
         }
     }
-    while (hiddenWord == null || hiddenWord.Length == 0);
+    while (!isValidWord);
 
     Console.Clear();
     Console.WriteLine("Игрок 2, игра началась, отгадайте слово\n");
-    ProgressGame(GameSettings.Attempts, hiddenWord.ToUpper());
+    ProgressGame(GameSettings.Attempts, hiddenWord!.ToUpper());
 }
 
 
