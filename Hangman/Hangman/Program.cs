@@ -4,8 +4,7 @@
 GameSettings.SetConsoleSettings();
 while (true)
 {
-    GameStatus menuItem = CallMenu();
-    switch (menuItem)
+    switch (Menu.SelectFromMenu(menuItems))
     {
         case GameStatus.Start:
             StartGame();
@@ -21,19 +20,8 @@ while (true)
     }
 }
 
-static GameStatus CallMenu()
-{
-    Console.Clear();
-    Console.WriteLine("\n1(Новая игра)  |  2(Выйти)");
-    Console.WriteLine();
-    string? input = Console.ReadLine();
-    GameStatus.TryParse(input, out GameStatus menuItem);
-    return menuItem;
-}
-
 static void StartGame()
 {
-
     string[] dictionary = new string[0];
     try
     {
@@ -104,7 +92,8 @@ static string ProgressGame(int attempts, string hiddenWord)
 
         if (letterUsedBefore)
         {
-            PrintLetterStatus(usedLetters);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
             continue;
         }
         else
@@ -123,12 +112,6 @@ static string ProgressGame(int attempts, string hiddenWord)
     DrawingHangman(attempts);
     PrintGameResult(userWord, hiddenWord);
     return new string(userWord);
-}
-
-static void PrintLetterStatus(List<char> usedLetters)
-{
-    ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
-    ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
 }
 
 static void PrintGameResult(char[] userWord, string hiddenWord)
@@ -168,10 +151,6 @@ static string[] ReadingDictionary()
 {
     return File.ReadAllLines(GameSettings.FileName);
 }
-
-
-
-
 
 
 
