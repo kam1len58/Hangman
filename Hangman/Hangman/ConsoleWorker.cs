@@ -1,4 +1,6 @@
-﻿namespace Hangman;
+﻿using System.Collections.Immutable;
+
+namespace Hangman;
 
 static class ConsoleWorker
 {
@@ -10,10 +12,14 @@ static class ConsoleWorker
         Console.ResetColor();
     }
 
-    public static (bool, string?) TryInputWord()
+    public static (bool isValidWord, string inputWord) TryInputWord(ImmutableHashSet<char>? allowedSymbols = null)
     {
-        string hiddenWord = Console.ReadLine()!;
-        bool isValidLetter = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
-        return (isValidLetter, hiddenWord);
+        bool isValidWord = true;
+        string inputWord = Console.ReadLine()!;
+        if (allowedSymbols == null)
+            return (isValidWord, inputWord);
+        
+        isValidWord = inputWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
+        return (isValidWord, inputWord);
     }
 }
