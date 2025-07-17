@@ -163,9 +163,8 @@ static void StartTwoPlayerMode()
     {
         Console.Clear();
         Console.WriteLine("Игрок 1, загадайте слово:\n");
-        (isValidWord, hiddenWord) = ConsoleWorker.TryInputWord();
+        (isValidWord, hiddenWord) = ConsoleWorker.TryInputWord(Alphabet.AllowedSymbols);
         Console.Clear();
-        isValidWord = hiddenWord.All(letter => Alphabet.AllowedSymbols.Contains(letter));
         if (hiddenWord.Length == 0)
         {
             isValidWord=false;
