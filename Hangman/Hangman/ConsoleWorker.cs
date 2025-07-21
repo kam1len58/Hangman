@@ -28,4 +28,19 @@ static class ConsoleWorker
 
         return (isValidWord, inputWord);
     }
+
+    public static void DrawingHangman(int attempts)
+    {
+        string drawing = attempts switch
+        {
+            (int)DrawingStatus.Head => Drawing.AttemptSix,
+            (int)DrawingStatus.Body => Drawing.AttemptFive,
+            (int)DrawingStatus.RightHand => Drawing.AttemptFour,
+            (int)DrawingStatus.LeftHand => Drawing.AttemptThree,
+            (int)DrawingStatus.RightLeg => Drawing.AttemptTwo,
+            (int)DrawingStatus.LeftLeg => Drawing.AttemptOne,
+            _ => Drawing.Pillar,
+        };
+        Console.WriteLine(drawing);
+    }
 }
