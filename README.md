@@ -14,7 +14,7 @@
 Файл для скачки можете найти на [странице Microsoft](https://dotnet.microsoft.com/ru-ru/download/dotnet/9.0).
 
 1. Перейдите в папку Hangman в CLI.
-2. Выполните команду `dotnet publish --self-contained -p:PublishSingleFile=true` для сборки проекта.
+2. Выполните команду `dotnet publish --self-contained -p:PublishSingleFile=true` для сборки проекта, это позволяет сделать её более чистой, поскольку команда упаковывает приложение в отдельный исполняемый файл, что упрощает сборку и запуск.
 3. Затем перейдите в папку Hangman\Hangman\bin\Release\net9.0\win-x64\publish.
 4. Запустите приложение с помощью команды `Hangman.exe`.
 5. Игра запустится в консоли. Следуйте инструкциям на экране, чтобы начать игру.
