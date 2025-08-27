@@ -21,6 +21,9 @@ while (true)
         case GameStatus.TwoPlayerGame:
             GameLoop.StartTwoPlayerMode();
             break;
+        default:
+            Console.WriteLine("\nВведите число 1 или 2");
+            break;
     }
 }
 
