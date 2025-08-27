@@ -2,7 +2,6 @@ namespace Hangman;
 
 static class GameLoop
 {
-    private static Random _randomWord = new Random();
     public static void StartGame()
     {
         List<string> wordList = [];
@@ -28,8 +27,9 @@ static class GameLoop
         {
             Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
             return;
-        }        
-        int wordIndex = _randomWord.Next(wordList.Count);
+        }
+        Random randomWord = new Random();
+        int wordIndex = randomWord.Next(wordList.Count);
         string hiddenWord = wordList[wordIndex].ToUpper();
         Console.Clear();
         Console.WriteLine("\nИгра началась");
@@ -80,9 +80,11 @@ static class GameLoop
                 ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
                 continue;
             }
-            usedLetters.Add(letter);
-            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
-
+            else
+            {
+                usedLetters.Add(letter);
+                ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+            }
 
             if (!isLetterInWord)
             {
