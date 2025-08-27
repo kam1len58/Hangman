@@ -2,6 +2,7 @@
 
 static class GameLoop
 {
+    private static Random _randomWord = new Random();
     public static void StartGame()
     {
         List<string> wordList = [];
@@ -28,8 +29,7 @@ static class GameLoop
             Console.WriteLine("В файле нет слов. Игра невозможна. До новых встреч!");
             return;
         }
-        Random randomWord = new Random();
-        int wordIndex = randomWord.Next(wordList.Count);
+        int wordIndex = _randomWord.Next(wordList.Count);
         string hiddenWord = wordList[wordIndex].ToUpper();
         Console.Clear();
         Console.WriteLine("\nИгра началась\n");
@@ -57,7 +57,6 @@ static class GameLoop
                 ConsoleWorker.PrintColorText($"Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
                 Console.WriteLine($"\n{new string(userWord)}");
                 ConsoleWorker.PrintColorText($"\nИспользованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
-
                 continue;
             }
 
@@ -81,11 +80,9 @@ static class GameLoop
                 ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
                 continue;
             }
-            else
-            {
-                usedLetters.Add(letter);
-                ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
-            }
+            usedLetters.Add(letter);
+            ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
+
 
             if (!isLetterInWord)
             {
