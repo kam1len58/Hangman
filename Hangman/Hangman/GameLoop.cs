@@ -32,13 +32,14 @@ static class GameLoop
         int wordIndex = randomWord.Next(wordList.Count);
         string hiddenWord = wordList[wordIndex].ToUpper();
         Console.Clear();
-        Console.WriteLine("\nИгра началась");
+        Console.WriteLine("\nИгра началась\n");
         StartGameplay(GameSettings.Attempts, hiddenWord);
     }
 
     public static string StartGameplay(int attempts, string hiddenWord)
     {
         List<char> usedLetters = new List<char>();
+        Console.WriteLine("Отгадываемое слово:");
         var userWord = new string('*', hiddenWord.Length).ToCharArray();
         Console.WriteLine($"{new string(userWord)}\n");
 
@@ -54,9 +55,10 @@ static class GameLoop
             if (!Alphabet.AllowedSymbols.Contains(letter))
             {
                 Console.Clear();
-                ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!", ConsoleColor.Red);
-                Console.WriteLine($"\n{new string(userWord)}");
-                ConsoleWorker.PrintColorText($"\nИспользованные буквы:\n{string.Join(' ', usedLetters)}\n", ConsoleColor.Yellow);
+                Console.WriteLine("Отгадываемое слово:");
+                Console.WriteLine($"{new string(userWord)}");
+                ConsoleWorker.PrintColorText($"\nИспользованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+                ConsoleWorker.PrintColorText("Использование символов запрещено, используйте только буквы кириллицы!\n", ConsoleColor.Red);
                 continue;
             }
 
@@ -72,28 +74,32 @@ static class GameLoop
             }
 
             Console.Clear();
-            Console.WriteLine($"\n{new string(userWord)}");
+            Console.WriteLine("Отгадываемое слово:");
+            Console.WriteLine($"{new string(userWord)}");
 
             if (letterUsedBefore)
             {
-                ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+                ConsoleWorker.PrintColorText($"\nИспользованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+                ConsoleWorker.PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
                 ConsoleWorker.PrintColorText("Вы уже использовали эту букву!", ConsoleColor.Red);
                 continue;
             }
             else
             {
                 usedLetters.Add(letter);
-                ConsoleWorker.PrintColorText($"Использованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
+                ConsoleWorker.PrintColorText($"\nИспользованные буквы:\n{string.Join(' ', usedLetters)}", ConsoleColor.Yellow);
             }
 
-            if (!isLetterInWord)
+            ConsoleWorker.PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
+
+            if (isLetterInWord)
+                Console.WriteLine();
+            else
             {
                 attempts--;
                 ConsoleWorker.PrintColorText("Вы использовали неверную букву!", ConsoleColor.Red);
             }
-            ConsoleWorker.PrintColorText($"Вы нажали на букву - {letter}", ConsoleColor.Cyan);
         }
-        ConsoleWorker.DrawingHangman(attempts);
         PrintGameResult(userWord, hiddenWord);
         return new string(userWord);
     }
@@ -103,14 +109,14 @@ static class GameLoop
         if (new string(userWord) == hiddenWord)
         {
             Console.Clear();
-            Console.WriteLine($"\nВы выиграли!\nЗагаданное слово - {hiddenWord}");
+            ConsoleWorker.PrintColorText($"\nВы выиграли!\nЗагаданное слово - {hiddenWord}", ConsoleColor.Green);
             Console.WriteLine("\nНажмите на любую клавишу для выхода в меню");
             Console.ReadKey();
         }
         else
         {
             Console.Clear();
-            Console.WriteLine($"\nВы проиграли!\nЗагаданное слово - {hiddenWord}");
+            ConsoleWorker.PrintColorText($"\nВы проиграли!\nЗагаданное слово - {hiddenWord}", ConsoleColor.Red);
             Console.WriteLine("\nНажмите на любую клавишу для выхода в меню");
             Console.ReadKey();
         }
