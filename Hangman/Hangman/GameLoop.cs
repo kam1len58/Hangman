@@ -3,6 +3,7 @@
 static class GameLoop
 {
     private static Random _randomWord = new Random();
+
     public static void StartGame()
     {
         List<string> wordList = [];
